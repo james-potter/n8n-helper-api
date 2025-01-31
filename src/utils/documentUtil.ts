@@ -10,13 +10,38 @@ export const extractFromHtml = (html: string, containerSelector: string, subElem
 
     containers.forEach((container) => {
         const extractedItem: Record<string, string> = {};
-
         // Loop through each selector dynamically
         for (const [key, selector] of Object.entries(subElementSelectors)) {
-            const element = container.querySelector(selector);
-            extractedItem[key] = element ? element.textContent?.trim() || "" : "Not found";
-        }
 
+            const element = container.querySelector(selector);
+            //extractedItem[key] = element ? element.textContent?.trim() || "" : "Not found";
+
+            if (selector.startsWith("a")) {
+                extractedItem[key] = element
+                ? element.getAttribute("href") ||
+                element.textContent?.trim() ||
+                element.getAttribute("src") ||
+                element.getAttribute("alt") ||
+                "Not found"
+                : "Not found";
+            } else if (selector.startsWith("img")) {
+                extractedItem[key] = element
+                ? element.getAttribute("src") ||
+                element.textContent?.trim() ||
+                element.getAttribute("href") ||
+                element.getAttribute("alt") ||
+                "Not found"
+                : "Not found";
+            } else {
+                extractedItem[key] = element
+                ? element.textContent?.trim() ||
+                element.getAttribute("href") ||
+                element.getAttribute("src") ||
+                element.getAttribute("alt") ||
+                "Not found"
+                : "Not found";
+            }
+         }
         extractedData.push(extractedItem);
     });
 
