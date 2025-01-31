@@ -1,0 +1,34 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Environment variables (security risk if exposed)
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Swagger JSON file (if auto-generated)
+swagger.json
+
+# Compiled TypeScript files
+dist/
+build/
+
+# IDE settings (VS Code, JetBrains, etc.)
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# vscode
+.vscode
+
+#coverage
+coverage
