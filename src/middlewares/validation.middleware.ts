@@ -14,6 +14,38 @@ const validateUrlMiddleware = (req: Request, res: Response, next: NextFunction) 
     next();
 };
 
+export function validatePdfMiddleware(req: Request, res: Response, next: NextFunction): void {
+    const pdfFile = req.file;
+    
+    if (!pdfFile) {
+        res.status(400).json({ message: 'No file uploaded' });
+        return;  // This terminates further execution
+    }
+
+    // Validate if the uploaded file is a PDF
+    if (pdfFile.mimetype !== 'application/pdf') {
+        res.status(400).json({ message: 'Invalid file type, must be a PDF' });
+        return;  // This terminates further execution
+    }
+
+    // If validation passes, call next()
+    next();
+}
+
+const validatePdfMiddleware2 = (req: Request, res: Response, next: NextFunction) => {
+    const pdfFile = req.file;
+    if (!pdfFile) {
+        return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    // Validate if the uploaded file is a PDF
+    if (pdfFile.mimetype !== 'application/pdf') {
+        return res.status(400).json({ message: 'Invalid file type, must be a PDF' });
+    }
+
+    next();
+};
+
 const validateCssMiddleware = (req: Request, res: Response, next: NextFunction) => {
     // Get URL from query (for GET) or body (for POST)
     const { url, cssClass, selectors } = req.body;

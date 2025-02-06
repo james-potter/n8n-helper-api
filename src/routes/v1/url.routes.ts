@@ -1,8 +1,12 @@
 import { Router } from 'express';
 import {UrlController} from '../../controllers/url.controller';
-import {validateUrlMiddleware, validateCssMiddleware} from '../../middlewares/validation.middleware';
+import {PdfController, pdfTableExtract} from '../../controllers/pdf.controller';
+import upload from '../../config/multerConfig'; // Import the multer configuration
+import {validateUrlMiddleware, validateCssMiddleware, validatePdfMiddleware} from '../../middlewares/validation.middleware';
 
 const router = Router();
+
+
 const urlController = new UrlController();
 
 /**
@@ -161,6 +165,35 @@ router.post('/url/metadata', validateUrlMiddleware, urlController.getReadability
  *         description: Server error while fetching URL
  */
 router.post('/url/cssextract', validateCssMiddleware, urlController.getCssExtract);
+
+
+/**
+ * @swagger
+ * /pdf/extract:
+ *   post:
+ *     summary: Fetch content from a URL
+ *     tags: [URL]
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pdf:
+ *                 type: string
+ *                 format: binary
+ *                 description: The PDF File being uploaded
+ *     responses:
+ *       200:
+ *         description: Successfully processed the PDF
+ *       400:
+ *         description: Problem with the PDF
+ *       500:
+ *         description: Failed to process PDF
+ */
+router.post('/pdf/extract', upload.single('pdf'), validatePdfMiddleware, pdfTableExtract);
 
 
 //If fetching full content → /url/fetch
